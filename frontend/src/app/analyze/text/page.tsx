@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import { useState } from "react";
 
 export default function TextAnalyze() {
@@ -10,7 +10,7 @@ export default function TextAnalyze() {
     if (!text.trim()) return;
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:8000/api/analyze/text", {
+      const res = await fetch("https://fake-news-detector-1-z12g.onrender.com/api/analyze/text", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text }),
@@ -26,7 +26,7 @@ export default function TextAnalyze() {
   return (
     <main style={{backgroundColor:"#030712",minHeight:"100vh",color:"white",padding:"40px 24px"}}>
       <a href="/">Back to Home</a>
-      <h1 style={{fontSize:"36px",fontWeight:"bold",margin:"24px 0"}}>📝 Text Analyzer</h1>
+      <h1 style={{fontSize:"36px",fontWeight:"bold",margin:"24px 0"}}>?? Text Analyzer</h1>
       <textarea value={text} onChange={(e) => setText(e.target.value)}
         placeholder="Paste news article here..."
         style={{width:"100%",maxWidth:"800px",height:"180px",backgroundColor:"#111827",border:"1px solid #374151",borderRadius:"8px",padding:"16px",color:"white",display:"block"}}

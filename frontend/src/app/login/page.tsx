@@ -13,7 +13,7 @@ export default function Login() {
       const formData = new FormData();
       formData.append("username", email);
       formData.append("password", password);
-      const res = await fetch("http://localhost:8000/api/auth/login", { method: "POST", body: formData });
+      const res = await fetch("https://fake-news-detector-1-z12g.onrender.com/api/auth/login", { method: "POST", body: formData });
       const data = await res.json();
       if (data.access_token) {
         localStorage.setItem("token", data.access_token);
