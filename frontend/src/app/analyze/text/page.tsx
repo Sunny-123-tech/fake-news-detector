@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import { useState } from "react";
 
 export default function TextAnalyzer() {
@@ -14,7 +14,7 @@ export default function TextAnalyzer() {
     setResult(null);
     try {
       const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 120000);
+      const timeout = setTimeout(() => controller.abort(), 180000);
       const res = await fetch("https://fake-news-detector-1-z12g.onrender.com/api/analyze/text", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -43,8 +43,8 @@ export default function TextAnalyzer() {
   return (
     <main style={{backgroundColor:"#030712",minHeight:"100vh",color:"white",padding:"40px 24px"}}>
       <div style={{maxWidth:"800px",margin:"0 auto"}}>
-        <a href="/" style={{color:"#9ca3af",textDecoration:"none",fontSize:"14px"}}>← Back to Home</a>
-        <h1 style={{fontSize:"32px",fontWeight:"bold",margin:"24px 0 8px"}}>📰 Text Analyzer</h1>
+        <a href="/" style={{color:"#9ca3af",textDecoration:"none",fontSize:"14px"}}>? Back to Home</a>
+        <h1 style={{fontSize:"32px",fontWeight:"bold",margin:"24px 0 8px"}}>?? Text Analyzer</h1>
         <p style={{color:"#9ca3af",marginBottom:"24px"}}>Paste any news article or claim to analyze</p>
         
         <textarea value={text} onChange={(e) => setText(e.target.value)}
@@ -53,12 +53,12 @@ export default function TextAnalyzer() {
         
         <button onClick={analyze} disabled={loading || !text.trim()}
           style={{marginTop:"16px",backgroundColor:loading?"#374151":"#dc2626",color:"white",padding:"12px 32px",borderRadius:"8px",border:"none",fontSize:"16px",fontWeight:"600",cursor:loading?"not-allowed":"pointer"}}>
-          {loading ? "⏳ Analyzing... (may take 60s on first run)" : "🔍 Analyze"}
+          {loading ? "? Analyzing... (may take 60s on first run)" : "?? Analyze"}
         </button>
 
         {error && (
           <div style={{marginTop:"24px",backgroundColor:"#1f2937",border:"1px solid #ef4444",borderRadius:"12px",padding:"20px"}}>
-            <p style={{color:"#ef4444"}}>⚠️ {error}</p>
+            <p style={{color:"#ef4444"}}>?? {error}</p>
           </div>
         )}
 
