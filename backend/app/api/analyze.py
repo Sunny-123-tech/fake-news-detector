@@ -1,4 +1,4 @@
-﻿from fastapi import APIRouter, UploadFile, File, HTTPException
+from fastapi import APIRouter, UploadFile, File, HTTPException
 from pydantic import BaseModel
 from groq import Groq
 import os
@@ -29,7 +29,7 @@ def analyze_text(request: TextAnalyzeRequest):
 News text: {request.text}"""
 
     response = client.chat.completions.create(
-        model="llama3-8b-8192",
+        model="llama-3.3-70b-versatile",
         messages=[{"role": "user", "content": prompt}],
         max_tokens=500,
         temperature=0.3,
@@ -57,7 +57,7 @@ async def analyze_image(file: UploadFile = File(...)):
     prompt = f"An image named '{file.filename}' ({size} bytes) was uploaded for fake news detection. Based on file size {size} bytes and ELA score {ela_score}, give a brief 2-sentence analysis of whether this image might be manipulated."
     
     response = client.chat.completions.create(
-        model="llama3-8b-8192",
+        model="llama-3.3-70b-versatile",
         messages=[{"role": "user", "content": prompt}],
         max_tokens=200,
     )
