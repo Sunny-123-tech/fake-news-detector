@@ -5,30 +5,30 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-import certifi
+# Database connection string
+DATABASE_URL = os.getenv("DATABASE_URL")
 
-# MySQL connection via PyMySQL
-# Format: mysql+pymysql://user:password@host:port/dbname
-DATABASE_URL = os.getenv(
-    "DATABASE_URL",
-    "mysql+pymysql://root:Sunny%40123@localhost:3306/fakenews_db"
-)
+# Format: postgresql://user:password@host:port/dbname
+if DATABASE_URL:
+    # SQLAlchemy 1.4+ requires "postgresql://" instead of "postgres://"
+    if DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+else:
+    # Fallback to local SQLite for fast local development
+    DATABASE_URL = "sqlite:///./fakenews.db"
 
-# Strip out query parameters from DATABASE_URL if the user added them,
-# because we will manually supply the SSL connect_args for reliability.
-clean_url = DATABASE_URL.split("?")[0]
-
-engine = create_engine(
-    clean_url,
-    pool_pre_ping=True,
-    pool_recycle=300,
-    connect_args={
-        "ssl": {
-            "ca": certifi.where()
-        }
-    },
-    echo=False
-)
+# Setting up the engine
+if "sqlite" in DATABASE_URL:
+    engine = create_engine(
+        DATABASE_URL, connect_args={"check_same_thread": False}, echo=False
+    )
+else:
+    engine = create_engine(
+        DATABASE_URL,
+        pool_pre_ping=True,        # reconnect if connection dropped
+        pool_recycle=300,          # recycle connections every 5 min
+        echo=False
+    )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
