@@ -2,19 +2,25 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api import auth, analyze, users
 from app.db.database import engine, Base
-
+import logging
 from contextlib import asynccontextmanager
+
+db_status = "Unknown"
+db_error = ""
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Try to create tables, but don't crash if DB is unresponsive
-    import logging
+    global db_status, db_error
     try:
         from app.models import user, analysis  # noqa: F401
         Base.metadata.create_all(bind=engine)
         logging.info("Database tables verified.")
+        db_status = "Connected and tables created!"
+        db_error = "None"
     except Exception as e:
         logging.error(f"Failed to connect to database on startup: {e}")
+        db_status = "Connection Failed"
+        db_error = str(e)
     yield
 
 app = FastAPI(
@@ -38,4 +44,8 @@ app.include_router(users.router, prefix="/api/users", tags=["Users"])
 
 @app.get("/")
 def root():
-    return {"status": "Fake News Detector API is running!", "database": "MySQL connected ✓"}
+    return {
+        "status": "Fake News Detector API is running!", 
+        "database": db_status, 
+        "error": db_error
+    }
