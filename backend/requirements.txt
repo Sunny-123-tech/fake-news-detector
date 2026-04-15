@@ -31,7 +31,8 @@ MarkupSafe==3.0.3
 packaging==26.0
 passlib==1.7.4
 prompt_toolkit==3.0.52
-psycopg2-binary==2.9.11
+PyMySQL==1.1.1
+cryptography==41.0.7
 pyasn1==0.6.2
 pycparser==3.0
 pydantic==2.12.5
