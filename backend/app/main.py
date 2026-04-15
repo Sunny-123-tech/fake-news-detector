@@ -3,15 +3,25 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api import auth, analyze, users
 from app.db.database import engine, Base
 
-# Import all models so SQLAlchemy knows about them and creates tables
-from app.models import user, analysis  # noqa: F401
+from contextlib import asynccontextmanager
 
-Base.metadata.create_all(bind=engine)
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Try to create tables, but don't crash if DB is unresponsive
+    import logging
+    try:
+        from app.models import user, analysis  # noqa: F401
+        Base.metadata.create_all(bind=engine)
+        logging.info("Database tables verified.")
+    except Exception as e:
+        logging.error(f"Failed to connect to database on startup: {e}")
+    yield
 
 app = FastAPI(
     title="Fake News Detector API",
     description="AI-powered fake news detection for text, images and videos",
-    version="1.0.0"
+    version="1.0.0",
+    lifespan=lifespan
 )
 
 app.add_middleware(
