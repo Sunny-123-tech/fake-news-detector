@@ -15,7 +15,7 @@ export default function TextAnalyzer() {
     try {
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 180000);
-      const res = await fetch("https://fake-news-detector-1-z12g.onrender.com/api/analyze/text", {
+      const res = await fetch("https://fake-news-detector-ysi0.onrender.com/api/analyze/text", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text }),

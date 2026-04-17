@@ -9,7 +9,7 @@ export default function Register() {
   const register = async () => {
     setLoading(true);
     try {
-      const res = await fetch("https://fake-news-detector-1-z12g.onrender.com/api/auth/register", {
+      const res = await fetch("https://fake-news-detector-ysi0.onrender.com/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),

@@ -18,7 +18,7 @@ export default function ImageAnalyze() {
     const formData = new FormData();
     formData.append("file", file);
     try {
-      const res = await fetch("https://fake-news-detector-1-z12g.onrender.com/api/analyze/image", { method: "POST", body: formData });
+      const res = await fetch("https://fake-news-detector-ysi0.onrender.com/api/analyze/image", { method: "POST", body: formData });
       const data = await res.json();
       setResult(data);
     } catch { alert("Error connecting to API!"); }
