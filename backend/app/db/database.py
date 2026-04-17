@@ -5,28 +5,25 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Database connection string
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = os.getenv("DATABASE_URL") or os.getenv("POSTGRES_URL")
 
-# Format: postgresql://user:password@host:port/dbname
-if DATABASE_URL:
-    # SQLAlchemy 1.4+ requires "postgresql://" instead of "postgres://"
-    if DATABASE_URL.startswith("postgres://"):
-        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
-else:
-    # Fallback to local SQLite for fast local development
-    DATABASE_URL = "sqlite:///./fakenews.db"
+if not DATABASE_URL:
+    raise ValueError("DATABASE_URL or POSTGRES_URL is not set in environment variables!")
 
-# Setting up the engine
-if "sqlite" in DATABASE_URL:
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
+if DATABASE_URL.startswith("sqlite"):
     engine = create_engine(
-        DATABASE_URL, connect_args={"check_same_thread": False}, echo=False
+        DATABASE_URL,
+        connect_args={"check_same_thread": False},
+        echo=False
     )
 else:
     engine = create_engine(
         DATABASE_URL,
-        pool_pre_ping=True,        # reconnect if connection dropped
-        pool_recycle=300,          # recycle connections every 5 min
+        pool_pre_ping=True,
+        pool_recycle=300,
         echo=False
     )
 
