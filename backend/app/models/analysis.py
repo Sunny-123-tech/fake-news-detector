@@ -15,6 +15,6 @@ class Analysis(Base):
     ela_score = Column(Float, nullable=True)
     deepfake_probability = Column(Float, nullable=True)
     filename = Column(String(255), nullable=True)
-    input_text = Column(Text(length=2000), nullable=True)   # first 2000 chars of text input
-    explanation = Column(Text(length=3000), nullable=True)
+    input_text = Column(Text(), nullable=True)   # text input
+    explanation = Column(Text(), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
